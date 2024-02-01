@@ -21,7 +21,7 @@ const menu =[
         price: 10.99,
         title:"godzilla milkshake",
         desc:"An earth shaking HALF GALLON thick & creamy milk shake! Choose up to two ice cream flavors and bring your friends to help put it down!",
-        category:"dinner"
+        category:"shakes"
     } ,
     {
         id:4,
@@ -29,7 +29,7 @@ const menu =[
         price: 11.99,
         title:"jollof rice",
         desc:"Jollof rice is a staple in West African cuisine. It's made from rice, tomatoes, onions, peppers, and other seasonings—absolutely delicious!",
-        category:"dinner"
+        category:"breakfast"
     } ,
     {
         id:5,
@@ -37,7 +37,7 @@ const menu =[
         price: 9.99,
         title:"fried rice",
         desc:"This easy fried rice recipe only takes 15 minutes to make, it's easy to customize with your favorite add-ins, and it's SO delicious!",
-        category:"dinner"
+        category:"lunch"
     } ,
     {
         id:6,
@@ -45,7 +45,7 @@ const menu =[
         price: 12.99,
         title:"fried chicken",
         desc:"A quick dredge of buttermilk and seasoned flour is the secret to this perfectly moist, crunchy Fried Chicken recipe.",
-        category:"break fast"
+        category:"shakes"
     } ,
     {
         id:7,
@@ -53,7 +53,7 @@ const menu =[
         price: 10.99,
         title:"pop corn",
         desc:"An earth shaking HALF GALLON thick & creamy milk shake! Choose up to two ice cream flavors and bring your friends to help put it down!",
-        category:"dinner"
+        category:"breakfast"
     } ,
     {
         id:8,
@@ -61,7 +61,7 @@ const menu =[
         price: 7.99,
         title:"coack",
         desc:"Coca-Cola, or Coke, is a carbonated soft drink manufactured by the Coca-Cola Company. In 2013, Coke products were sold in over 200 countries worldwide",
-        category:"Appetizer"
+        category:"lunch"
     } ,
     {
         id:9,
@@ -69,15 +69,34 @@ const menu =[
         price: 5.99,
         title:"ice cream",
         desc:"Ice cream is a frozen dessert typically made from milk or cream that has been flavoured with a sweetener, either sugar or an alternative, and a spice",
-        category:"Appetizer"
-    } 
+        category:"shakes"
+    } ,
+    {
+        id:10,
+        img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjZTIe3dROjAhz-B2_nB0zJlHM09wDLhsszA&usqp=CAU",
+        price: 16.99,
+        title:"stick dinner",
+        desc:"Food On A Stick ; Chicken Caesar Salad on a Stick. 4 Ratings ; Mini Pie Pops. 3 Ratings ; Baked Mexican Chips on a Stick. 2 Ratings ; Watermelon Salad on a Stick.",
+        category:"dinner"
+
+    }
 ];
+
 
 
 const sectionCenter = document.querySelector('.section-center');
 
+const container = document.querySelector('.btn-container')
+
+
+
 window.addEventListener('DOMContentLoaded', function(){
-    let displayMenu = menu.map(function (item){
+    displayMenuItems(menu);
+    displayMenuButtons();
+})
+
+function displayMenuItems(menuItems){
+    let displayMenu = menuItems.map(function (item){
     
         return `<article class="menu-item">
         <img src=${item.img} alt=${item.title} class="photo" />
@@ -94,8 +113,42 @@ window.addEventListener('DOMContentLoaded', function(){
     })
     displayMenu = displayMenu.join("");
     sectionCenter.innerHTML = displayMenu;
-})
+}
+function displayMenuButtons() {
+    const categories = menu.reduce(function(values, item){
+        if(!values.includes(item.category)){
+            values.push(item.category)
+        }
+      return values; 
+    }, ['all'])
+   const categoryBtns = categories.map(function(category){
+    return ` <button type="button" class="filter-btn" data-id=${category}>
+   ${category}
+  </button>`
+   }).join('');
+   container.innerHTML = categoryBtns;
+   const filterBtns =document.querySelectorAll('.filter-btn')
 
+filterBtns.forEach(function(btn){
+    btn.addEventListener('click', function(e){
+    const category=  e.currentTarget.dataset.id;
+    const menuCategory = menu.filter(function(menuItem){
+        if(menuItem.category === category){
+        return menuItem;
+        }
+    })
+
+//console.log(menuCategory)
+
+if(category === 'all'){
+    displayMenuItems(menu)
+}
+else{
+    displayMenuItems(menuCategory)
+}
+    })
+})
+}
 
 
 
